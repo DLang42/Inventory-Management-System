@@ -1,0 +1,19 @@
+## Build results
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+## Rider
+.idea/
+
+## Visual Studio
+.vs/
+*.user
+*.suo
+
+## .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
