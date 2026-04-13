@@ -1,8 +1,12 @@
 .search-result {
-    overflow-y: auto; 
-    max-height: 300px; 
-    border: 1px solid silver; 
+    overflow-y: auto;
+    max-height: 300px;
+    border: 1px solid silver;
     padding-top: 5px;
+}
+
+.selected {
+    background: antiquewhite;
 }
 
 div ul {
@@ -14,3 +18,4 @@ div ul {
 div ul li {
     cursor: pointer;
 }
+
