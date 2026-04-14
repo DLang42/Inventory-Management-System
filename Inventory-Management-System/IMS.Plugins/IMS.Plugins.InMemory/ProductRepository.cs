@@ -8,8 +8,11 @@ namespace IMS.Plugins.InMemory
     {
         private List<Product> _products;
 
-        public ProductRepository()
+        private readonly IInventoryRepository inventoryRepository;
+        
+        public ProductRepository(IInventoryRepository inventoryRepository)
         {
+            this.inventoryRepository = inventoryRepository;
             _products = new List<Product>()
             {
                 new Product {ProductId = 1, ProductName = "Bike", Quantity = 10, Price = 150},
@@ -86,10 +89,14 @@ namespace IMS.Plugins.InMemory
                         };
                         if (productInventory.Inventory != null)
                         {
-                            newProductInventory.Inventory.InventoryId = productInventory.Inventory.InventoryId;
-                            newProductInventory.Inventory.InventoryName = productInventory.Inventory.InventoryName;
-                            newProductInventory.Inventory.Quantity = productInventory.Inventory.Quantity;
-                            newProductInventory.Inventory.Price = productInventory.Inventory.Price;
+                            var inv = await inventoryRepository.GetInventoryByIdAsync(productInventory.Inventory.InventoryId);
+                            if (inv != null)
+                            {
+                                newProductInventory.Inventory.InventoryId = inv.InventoryId;
+                                newProductInventory.Inventory.InventoryName = inv.InventoryName;
+                                newProductInventory.Inventory.Quantity = inv.Quantity;
+                                newProductInventory.Inventory.Price = inv.Price;
+                            }
                         }
                         newProduct.ProductInventories.Add(newProductInventory);
                     }

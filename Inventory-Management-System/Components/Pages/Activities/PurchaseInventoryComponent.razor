@@ -1,5 +1,8 @@
 @page "/purchase"
 @using static Inventory_Management_System.Components.Controls.Common.AutoCompleteComponent
+
+@inject IJSRuntime JSRuntime
+
 @inject IViewInventoryByNameUseCase ViewInventoryByNameUseCase
 @inject IViewInventoryByIdUseCase ViewInventoryByIdUseCase
 @inject IPurchaseInventoryUseCase PurchaseInventoryUseCase
@@ -8,7 +11,7 @@
 <br/>
 
 @rendermode InteractiveServer
-<EditForm Model="purchaseViewModel" OnValidSubmit="Purchase">
+<EditForm id="purchase-form" Model="purchaseViewModel" OnValidSubmit="Purchase">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
     
@@ -48,7 +51,16 @@
     private PurchaseViewModel purchaseViewModel = new PurchaseViewModel();
 
     private Inventory selectedInventory = null;
-    
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            JSRuntime.InvokeVoidAsync("preventFormSubmission", "purchase-form");
+            
+        }
+    }
+
     private List<ItemViewModel>? SearchInventory(string name)
     {
         var list = ViewInventoryByNameUseCase.ExecuteAsync(name).GetAwaiter().GetResult();
